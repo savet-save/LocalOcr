@@ -56,6 +56,7 @@ object OcrUtils {
         // 缩放是等比例的，缩放系数 = resize/长的边
         val maxSideLen = (1.0f * maxSize).toInt()
 
+        LogUtils.d(TAG, "detect-thread : ${Thread.currentThread().name}")
 //            Logger.i("selectedImg=${img.height},${img.width} ${img.config}")
         val start = System.currentTimeMillis()
 
@@ -75,5 +76,16 @@ object OcrUtils {
     fun flowDetect(img: Bitmap) = flow<OcrResult> {
         emit(detect(img))
     }.flowOn(Dispatchers.IO)
+
+    /**
+     * 回收检测结果
+     *
+     * @param result OcrResult
+     */
+    fun recycleOcrResult(result: OcrResult) {
+        if (!result.boxImg.isRecycled) {
+            result.boxImg.recycle()
+        }
+    }
 
 }

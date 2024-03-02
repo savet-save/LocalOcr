@@ -8,4 +8,15 @@
     <color name="teal_800">#FF017776</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- 浅灰色  -->
+    <color name="light_gray">#D3D3D3</color>
+
+    <!-- 识别结果所使用的背景色  -->
+    <color name="detect_result_text_background">#F7F7F7</color>
+
+    <!-- 全透明  -->
+    <color name="full_transparent">#00000000</color>
+
+    <color name="green">#00FF00</color>
 </resources>

@@ -32,14 +32,10 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        OcrUtils.init(application)
-
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "test", Snackbar.LENGTH_LONG)
-                .setAction("Action") {
-                    LogUtils.i(TAG, "test")
-                }.show()
-        }
+        // 初始化OCR识别引擎
+        LogUtils.i(TAG, "init orc")
+        OcrUtils.init(application) // 同步初始化，大约耗时700ms
+        LogUtils.i(TAG, "end init orc")
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
