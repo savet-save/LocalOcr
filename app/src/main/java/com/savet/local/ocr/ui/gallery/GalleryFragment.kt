@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.savet.local.baselibrary.LogUtils
 import com.savet.local.ocr.databinding.FragmentGalleryBinding
 import com.savet.local.ocr.ui.adapter.DetectResultAdapter
+import com.savet.local.ocr.ui.manager.ControlScrollLayoutManager
 import com.savet.local.ocr.utils.OcrUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -55,9 +56,6 @@ class GalleryFragment : Fragment() {
             .load("file:///android_asset/test.png")
             .into(imageView)
 
-        binding.recyclerViewDetectResult.layoutManager = getLayoutManager()
-        binding.recyclerViewDetectResult.addItemDecoration(DetectResultAdapter.DetectItemDecoration())
-
         return root
     }
 
@@ -67,6 +65,14 @@ class GalleryFragment : Fragment() {
         binding.fab.setOnClickListener {
             detect()
         }
+
+        binding.recyclerViewDetectResult.layoutManager = getLayoutManager()
+        binding.recyclerViewDetectResult.addItemDecoration(DetectResultAdapter.DetectItemDecoration())
+        binding.recyclerViewDetectResult.addOnItemTouchListener(DetectResultAdapter.SelectListener())
+        binding.recyclerViewDetectResult.itemAnimator = null  // 取消动画
+        binding.recyclerViewDetectResult.setHasFixedSize(true) // ItemView的高度固定
+        binding.recyclerViewDetectResult.setItemViewCacheSize(16) // 设置RecyclerView缓存
+
     }
 
     private fun detect() {
@@ -90,6 +96,7 @@ class GalleryFragment : Fragment() {
                     .skipMemoryCache(true) // 跳过内存缓存
                     .diskCacheStrategy(DiskCacheStrategy.NONE) // 跳过磁盘缓存
                     .into(binding.imageView)
+                binding.gl1.setGuidelinePercent(0.4f) // 用于显示recyclerView
                 // 处理识别结果并显示
                 flow {
                     emit(galleryViewModel.getDetectAdapterDateList(it))
@@ -122,7 +129,7 @@ class GalleryFragment : Fragment() {
      * @return FlexboxLayoutManager
      */
     private fun getLayoutManager(): FlexboxLayoutManager {
-        val layoutManager = FlexboxLayoutManager(requireContext())
+        val layoutManager = ControlScrollLayoutManager(requireContext())
         layoutManager.flexDirection = FlexDirection.ROW //从左往右, 从上到下
         layoutManager.flexWrap = FlexWrap.WRAP //自动换行
         layoutManager.justifyContent = JustifyContent.FLEX_START //主轴(水平)左对齐
