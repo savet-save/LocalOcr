@@ -1,5 +1,9 @@
 package com.savet.local.ocr.utils
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+
 /**
  * 将中文所有单词分为单独的字，英文和数字分为连续的字符串，所有可见符号单独的符号(ascii码大于0x20)成为单独字符串。
  *
@@ -56,4 +60,16 @@ fun String.splitWord(): List<String> {
 fun Char.isAsciiLetter(): Boolean {
     return (this.code >= 'a'.code && this.code <= 'z'.code) ||
             (this.code >= 'A'.code && this.code <= 'Z'.code)
+}
+
+/**
+ * 拷贝指定内容到系统剪切板
+ *
+ * @param context
+ * @param label
+ */
+fun String.copyToClipboard(context: Context, label: String) {
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText(label, this)
+    clipboard.setPrimaryClip(clip)
 }

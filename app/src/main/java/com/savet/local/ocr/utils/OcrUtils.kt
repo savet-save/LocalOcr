@@ -43,7 +43,7 @@ object OcrUtils {
      * 识别图像转换为文字。该方法为耗时操作，会阻塞当前线程
      *
      * @param img 图像数据
-     * @return 识别的结果流，需要使用collect{}来接收
+     * @return 识别的结果
      */
     fun detect(img: Bitmap): OcrResult {
         // 输出的图像
@@ -56,8 +56,7 @@ object OcrUtils {
         // 缩放是等比例的，缩放系数 = resize/长的边
         val maxSideLen = (1.0f * maxSize).toInt()
 
-        LogUtils.d(TAG, "detect-thread : ${Thread.currentThread().name}")
-//            Logger.i("selectedImg=${img.height},${img.width} ${img.config}")
+        LogUtils.i("selectedImg=[h:${img.height},w:${img.width}] ${img.config}")
         val start = System.currentTimeMillis()
 
         // 开始识别
@@ -72,6 +71,7 @@ object OcrUtils {
      * 异步检查图像数据，返回一个flow
      *
      * @param img 图像数据
+     * @return 识别的结果流
      */
     fun flowDetect(img: Bitmap) = flow<OcrResult> {
         emit(detect(img))

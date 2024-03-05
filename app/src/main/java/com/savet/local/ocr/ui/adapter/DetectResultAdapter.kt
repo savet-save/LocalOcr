@@ -118,6 +118,21 @@ class DetectResultAdapter(private val dataList: List<AdapterData>) :
         return dataList[position].isSelect
     }
 
+    /**
+     * 获得所有选中项的内容
+     *
+     * @return 所有选中项的内容
+     */
+    fun getSelectContent() : String {
+        val content : StringBuilder = java.lang.StringBuilder()
+        dataList.forEach {
+            if (it.isSelect) {
+                content.append(it.text)
+            }
+        }
+        return content.toString()
+    }
+
     inner class DetectResultHolder(private val bind: ItemDetectResultBinding) :
         RecyclerView.ViewHolder(bind.root) {
 
