@@ -1,13 +1,13 @@
-package com.savet.local.ocr.ui.home
+package com.savet.local.ocr.ui.take
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class HomeViewModel : ViewModel() {
+class TakeImageModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+        value = "This is TakeImage Fragment"
     }
     val text: LiveData<String> = _text
 }

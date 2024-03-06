@@ -10,7 +10,6 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.savet.local.baselibrary.LogUtils
 import com.savet.local.ocr.databinding.ActivityMainBinding
 import com.savet.local.ocr.utils.OcrUtils
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_gallery, R.id.nav_take_image, R.id.nav_settings,
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

@@ -27,6 +27,7 @@ import com.savet.local.ocr.ui.adapter.DetectResultAdapter
 import com.savet.local.ocr.ui.manager.ControlScrollLayoutManager
 import com.savet.local.ocr.utils.OcrUtils
 import com.savet.local.ocr.utils.copyToClipboard
+import com.savet.local.ocr.utils.getLatestImageUri
 import com.savet.local.ocr.utils.isAllGranted
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -59,11 +60,18 @@ class GalleryFragment : Fragment() {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val imageView = binding.imageView
-        Glide.with(this@GalleryFragment)
-            .load("file:///android_asset/test.png")
-            .into(imageView)
+        setOnClickListener()
 
+        initRecyclerView()
+
+        registerForActivity {
+            showImage(it)
+        }
+
+        return root
+    }
+
+    private fun setOnClickListener() {
         binding.detectButton.setOnClickListener {
             detect()
         }
@@ -75,16 +83,6 @@ class GalleryFragment : Fragment() {
         binding.pickImageButton.setOnClickListener {
             pickImageFromGallery()
         }
-
-        initRecyclerView()
-
-        registerForActivity {
-            Glide.with(this@GalleryFragment)
-                .load(it)
-                .into(imageView)
-        }
-
-        return root
     }
 
 
@@ -132,6 +130,16 @@ class GalleryFragment : Fragment() {
         super.onStart()
         LogUtils.d(TAG, "onResume")
         requestStoragePermission()
+        context?.getLatestImageUri()?.also {
+            showImage(it)
+        }
+    }
+
+    private fun showImage(it: Uri) {
+        binding.detectImageView.visibility = View.VISIBLE
+        Glide.with(this@GalleryFragment)
+            .load(it)
+            .into(binding.detectImageView)
     }
 
     /**
@@ -168,9 +176,9 @@ class GalleryFragment : Fragment() {
     private fun detect() {
 
         flow {
-            binding.imageView.subsampling
+            binding.detectImageView.subsampling
             LogUtils.d(TAG, "")
-            val drawable = binding.imageView.drawable
+            val drawable = binding.detectImageView.drawable
             drawable ?: return@flow
             val bitmap = drawable.toBitmap()
             val ocrResult = OcrUtils.detect(bitmap)
@@ -186,7 +194,8 @@ class GalleryFragment : Fragment() {
                     .load(it.boxImg)
                     .skipMemoryCache(true) // 跳过内存缓存
                     .diskCacheStrategy(DiskCacheStrategy.NONE) // 跳过磁盘缓存
-                    .into(binding.imageView)
+                    .into(binding.detectImageView)
+                binding.copyContentButton.visibility = View.VISIBLE
                 binding.gl1.setGuidelinePercent(0.4f) // 用于显示recyclerView
                 // 处理识别结果并显示
                 flow {
@@ -197,7 +206,7 @@ class GalleryFragment : Fragment() {
                         // 用于确保焦点在最开始
                         binding.detectResultRV.layoutManager?.apply {
                             scrollToPosition(0)
-                            LogUtils.d(TAG, "scrollToPosition")
+                            LogUtils.d(TAG, "scrollToPosition to zero")
                         }
                     }.launchIn(lifecycleScope)
 

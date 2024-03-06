@@ -15,7 +15,7 @@
         android:layout_marginBottom="5dp"
         android:background="@drawable/bg_detect_result"
         android:padding="8dp"
-        android:textSize="26sp"
+        android:textSize="@dimen/detect_result_size"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

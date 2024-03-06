@@ -7,4 +7,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="activity_toolbar_height">40dp</dimen>
+
+    <dimen name="detect_result_size">17sp</dimen>
+
 </resources>
