@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ScanView使用  -->
+    <declare-styleable name="ScanView">
+        <!-- 控制动画从上到下或者是从下到上所需时间,单位秒 -->
+        <attr name="scanDuration" format="integer" />
+        <!-- 控制扫描线的宽度  -->
+        <attr name="scanLineWidth" format="dimension" />
+        <!-- 线条的颜色 -->
+        <attr name="scanLineColor" format="color" />
+    </declare-styleable>
+
+
+</resources>

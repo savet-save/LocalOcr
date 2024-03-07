@@ -20,7 +20,7 @@ import kotlin.math.min
  *
  * @property dataList 识别结果列表
  */
-class DetectResultAdapter(private val dataList: List<AdapterData>) :
+class DetectResultAdapter(private var dataList: List<AdapterData>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -131,6 +131,16 @@ class DetectResultAdapter(private val dataList: List<AdapterData>) :
             }
         }
         return content.toString()
+    }
+
+    /**
+     * 设置数据列表，并刷新页面的显示
+     *
+     * @param list
+     */
+    fun setDataList(list : List<AdapterData>) {
+        this.dataList = list
+        notifyItemRangeInserted(0, dataList.size)
     }
 
     inner class DetectResultHolder(private val bind: ItemDetectResultBinding) :

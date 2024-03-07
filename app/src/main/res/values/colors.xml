@@ -23,4 +23,7 @@
     <color name="green">#00FF00</color>
 
     <color name="ic_menu">#7F8694</color>
+
+    <!-- 苍白的绿色  -->
+    <color name="pale_green">#98FB98</color>
 </resources>

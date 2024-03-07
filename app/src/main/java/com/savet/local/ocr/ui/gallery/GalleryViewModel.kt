@@ -2,7 +2,6 @@ package com.savet.local.ocr.ui.gallery
 
 import androidx.lifecycle.ViewModel
 import com.benjaminwan.ocrlibrary.OcrResult
-import com.savet.local.baselibrary.LogUtils
 import com.savet.local.ocr.ui.adapter.DetectResultAdapter
 import com.savet.local.ocr.utils.splitWord
 

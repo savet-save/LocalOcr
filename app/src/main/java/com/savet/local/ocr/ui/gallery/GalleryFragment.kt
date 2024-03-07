@@ -10,27 +10,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.graphics.drawable.toBitmap
+import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.google.android.material.snackbar.Snackbar
-import com.savet.local.baselibrary.LogUtils
+import com.savet.local.baselibrary.utils.LogUtils
+import com.savet.local.baselibrary.utils.ToastUtils
+import com.savet.local.ocr.R
 import com.savet.local.ocr.databinding.FragmentGalleryBinding
 import com.savet.local.ocr.ui.adapter.DetectResultAdapter
 import com.savet.local.ocr.ui.manager.ControlScrollLayoutManager
-import com.savet.local.ocr.utils.OcrUtils
-import com.savet.local.ocr.utils.copyToClipboard
-import com.savet.local.ocr.utils.getLatestImageUri
-import com.savet.local.ocr.utils.isAllGranted
+import com.savet.local.ocr.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import java.util.*
 
 
 class GalleryFragment : Fragment() {
@@ -49,6 +47,11 @@ class GalleryFragment : Fragment() {
 
     private val galleryViewModel get() = _galleryViewModel!!
 
+    /**
+     * 保存选择图像的uri
+     */
+    private var savedUri: Uri? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,7 +63,7 @@ class GalleryFragment : Fragment() {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        setOnClickListener()
+        initButton()
 
         initRecyclerView()
 
@@ -71,18 +74,27 @@ class GalleryFragment : Fragment() {
         return root
     }
 
-    private fun setOnClickListener() {
+    private fun initButton() {
+        // 识别按钮
         binding.detectButton.setOnClickListener {
             detect()
         }
+        TooltipCompat.setTooltipText(binding.detectButton, getText(R.string.detect_btn_hint))
 
+        // 拷贝按钮
         binding.copyContentButton.setOnClickListener {
             copyContent()
         }
+        TooltipCompat.setTooltipText(
+            binding.copyContentButton,
+            getText(R.string.copy_content_btn_hint)
+        )
 
+        // 选择按钮
         binding.pickImageButton.setOnClickListener {
             pickImageFromGallery()
         }
+        TooltipCompat.setTooltipText(binding.pickImageButton, getText(R.string.pick_image_btn_hint))
     }
 
 
@@ -121,7 +133,7 @@ class GalleryFragment : Fragment() {
                     requestPermissionSuccess()
                 } else {
                     // 用户拒绝了权限，可以给出相应提示
-                    Snackbar.make(binding.root, "权限获取失败", Snackbar.LENGTH_LONG).show()
+                    ToastUtils.showToast("权限获取失败")
                 }
             }
     }
@@ -135,11 +147,12 @@ class GalleryFragment : Fragment() {
         }
     }
 
-    private fun showImage(it: Uri) {
+    private fun showImage(imageUri: Uri) {
         binding.detectImageView.visibility = View.VISIBLE
         Glide.with(this@GalleryFragment)
-            .load(it)
+            .load(imageUri)
             .into(binding.detectImageView)
+        savedUri = imageUri
     }
 
     /**
@@ -162,7 +175,7 @@ class GalleryFragment : Fragment() {
      *
      */
     private fun pickImageFromGallery() {
-        requestStoragePermission{
+        requestStoragePermission {
             val intent = Intent(Intent.ACTION_PICK).apply {
                 type = "image/*"
             }
@@ -176,41 +189,42 @@ class GalleryFragment : Fragment() {
     private fun detect() {
 
         flow {
-            binding.detectImageView.subsampling
-            LogUtils.d(TAG, "")
-            val drawable = binding.detectImageView.drawable
-            drawable ?: return@flow
-            val bitmap = drawable.toBitmap()
+            savedUri ?: return@flow
+            val bitmap = Glide.with(this@GalleryFragment)
+                .asBitmap()
+                .skipMemoryCache(true)
+                .load(savedUri)
+                .submit()
+                .get()
             val ocrResult = OcrUtils.detect(bitmap)
             emit(ocrResult)
         }.flowOn(Dispatchers.IO)
             .onStart {
-                showLoading()
-                Snackbar.make(binding.root, "开始识别", Snackbar.LENGTH_LONG).show()
+                controlLoading(true)
+                ToastUtils.showToast("开始识别")
             }.onEach {
-//                LogUtils.d(TAG, it.strRes)
-//                binding.progressBar.hide()
-                Glide.with(this@GalleryFragment)
-                    .load(it.boxImg)
-                    .skipMemoryCache(true) // 跳过内存缓存
-                    .diskCacheStrategy(DiskCacheStrategy.NONE) // 跳过磁盘缓存
-                    .into(binding.detectImageView)
-                binding.copyContentButton.visibility = View.VISIBLE
-                binding.gl1.setGuidelinePercent(0.4f) // 用于显示recyclerView
+                // 避免识别过程中切换页面导致的NullPointerException
+                val bind = _binding ?: return@onEach
+                bind.copyContentButton.visibility = View.VISIBLE
+                bind.gl1.setGuidelinePercent(0.4f) // 用于显示recyclerView
                 // 处理识别结果并显示
                 flow {
-                    emit(galleryViewModel.getDetectAdapterDateList(it))
+                    // 避免识别过程中切换页面导致的NullPointerException
+                    val viewModel = _galleryViewModel ?: return@flow
+                    emit(viewModel.getDetectAdapterDateList(it))
                 }.flowOn(Dispatchers.Default)
                     .onEach { array ->
-                        binding.detectResultRV.adapter = DetectResultAdapter(array)
+                        controlLoading(false)
                         // 用于确保焦点在最开始
-                        binding.detectResultRV.layoutManager?.apply {
+                        bind.detectResultRV.layoutManager?.apply {
                             scrollToPosition(0)
                             LogUtils.d(TAG, "scrollToPosition to zero")
                         }
+                        (bind.detectResultRV.adapter as DetectResultAdapter).setDataList(array)
                     }.launchIn(lifecycleScope)
 
             }.catch {
+                // 该流的所有异常都会在这里处理
                 it.printStackTrace()
             }.launchIn(lifecycleScope)
     }
@@ -222,16 +236,23 @@ class GalleryFragment : Fragment() {
     private fun copyContent() {
         val adapter = binding.detectResultRV.adapter as? DetectResultAdapter
         adapter?.also {
-            it.getSelectContent().copyToClipboard(requireContext(), TAG)
-            Snackbar.make(binding.root, "拷贝到系统剪切板", Snackbar.LENGTH_LONG).show()
+            val selectContent = it.getSelectContent()
+            if (selectContent.isNotEmpty()) {
+                selectContent.copyToClipboard(requireContext(), TAG)
+                ToastUtils.showToast("拷贝到系统剪切板")
+            }
         }
     }
 
+    private fun controlLoading(show: Boolean) {
+        if (show) {
+            binding.detectLoadingView.visibility = View.VISIBLE
+            binding.detectLoadingView.reStartScan()
+        } else {
+            binding.detectLoadingView.stopScan()
+            binding.detectLoadingView.visibility = View.INVISIBLE
+        }
 
-    private fun showLoading() {
-//        binding.progressBar.visibility = View.VISIBLE
-//        binding.progressBar.show()
-//        Glide.with(this@GalleryFragment).load(R.drawable.anim_loading).into(binding.imageView)
     }
 
     override fun onDestroyView() {
@@ -263,6 +284,7 @@ class GalleryFragment : Fragment() {
         binding.detectResultRV.itemAnimator = null  // 取消动画
         binding.detectResultRV.setHasFixedSize(true) // ItemView的高度固定
         binding.detectResultRV.setItemViewCacheSize(16) // 设置RecyclerView缓存
+        binding.detectResultRV.adapter = DetectResultAdapter(emptyList())
     }
 
 

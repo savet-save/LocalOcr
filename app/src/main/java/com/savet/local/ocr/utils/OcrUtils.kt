@@ -4,7 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import com.benjaminwan.ocrlibrary.OcrEngine
 import com.benjaminwan.ocrlibrary.OcrResult
-import com.savet.local.baselibrary.LogUtils
+import com.savet.local.baselibrary.utils.LogUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

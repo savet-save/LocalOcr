@@ -9,6 +9,10 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_camera">Take Image</string>
     <string name="content_description_function">function</string>
-    <string name="detect_hint">Please select the image you want to by \'+\'</string>
+    <string name="detect_text_hint">Please select the image you want to by \'+\'</string>
+
+    <string name="detect_btn_hint">detect image</string>
+    <string name="pick_image_btn_hint">pick image</string>
+    <string name="copy_content_btn_hint">copy select content</string>
 
 </resources>

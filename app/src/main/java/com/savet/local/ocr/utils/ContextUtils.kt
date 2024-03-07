@@ -26,6 +26,8 @@ fun Context.isAllGranted(vararg permissions: String): Boolean {
 /**
  * 获取10分钟内最新的一张图片
  *
+ * 需要android.permission.READ_EXTERNAL_STORAGE的权限
+ *
  * @return 图片uri
  */
 fun Context.getLatestImageUri(): Uri? {

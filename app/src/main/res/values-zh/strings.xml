@@ -8,6 +8,9 @@
     <string name="content_description_function">功能</string>
     <string name="nav_header_desc">savet头像</string>
 
-    <string name="detect_hint">请通过按钮\'+\'选择需要识别图片</string>
+    <string name="detect_text_hint">请通过按钮\'+\'选择需要识别图片</string>
+    <string name="detect_btn_hint">识别图像</string>
+    <string name="pick_image_btn_hint">选择图像</string>
+    <string name="copy_content_btn_hint">拷贝选中内容</string>
 
 </resources>

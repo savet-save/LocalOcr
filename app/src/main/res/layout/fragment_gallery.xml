@@ -20,7 +20,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="@string/detect_hint"
+        android:text="@string/detect_text_hint"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@id/gl1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,27 +40,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_loading" />
 
-    <!--    <ImageView-->
-    <!--        android:id="@+id/imageView"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:background="@color/black"-->
-    <!--        android:contentDescription="@string/nav_header_desc"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+    <com.savet.local.baselibrary.view.ScanView
+        android:id="@+id/detectLoadingView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:scanLineWidth="3dp"
+        app:scanLineColor="@color/pale_green"
+        app:layout_constraintBottom_toBottomOf="@id/detectImageView"
+        app:layout_constraintEnd_toEndOf="@id/detectImageView"
+        app:layout_constraintStart_toStartOf="@id/detectImageView"
+        app:layout_constraintTop_toTopOf="@id/detectImageView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detectResultRV"
@@ -95,8 +85,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
-        android:visibility="invisible"
         android:contentDescription="@string/content_description_function"
+        android:visibility="invisible"
         app:layout_anchor="@id/detectResultRV"
         app:layout_constraintBottom_toBottomOf="@id/detectResultRV"
         app:layout_constraintEnd_toEndOf="@id/detectResultRV"
