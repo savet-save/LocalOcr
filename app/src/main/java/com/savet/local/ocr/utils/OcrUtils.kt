@@ -30,13 +30,24 @@ object OcrUtils {
 
     lateinit var ocrEngine: OcrEngine
 
+    var initSuccess: Boolean = false
+
     /**
      * 初始化
      *
      * @param app 应用
      */
     fun init(app: Application) {
-        ocrEngine = OcrEngine(app)
+        if (initSuccess) {
+            return // 避免重复初始化
+        }
+        synchronized(OcrUtils::class.java) { // 避免多线程导致的异步
+            if (initSuccess) {
+                return // 双重锁
+            }
+            ocrEngine = OcrEngine(app)
+            initSuccess = true
+        }
     }
 
     /**

@@ -12,5 +12,6 @@
     <string name="detect_btn_hint">识别图像</string>
     <string name="pick_image_btn_hint">选择图像</string>
     <string name="copy_content_btn_hint">拷贝选中内容</string>
+    <string name="ready_text_hint">欢迎使用离线文字识别</string>
 
 </resources>

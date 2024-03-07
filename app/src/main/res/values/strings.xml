@@ -14,5 +14,7 @@
     <string name="detect_btn_hint">detect image</string>
     <string name="pick_image_btn_hint">pick image</string>
     <string name="copy_content_btn_hint">copy select content</string>
+    
+    <string name="ready_text_hint">Welcome to LocalOcr</string>
 
 </resources>
