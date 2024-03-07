@@ -1,6 +1,7 @@
-package com.savet.local.baselibrary
+package com.savet.local.baselibrary.utils
 
 import android.util.Log
+import com.savet.local.baselibrary.BuildConfig
 
 /**
  * 用于统一日志输出
