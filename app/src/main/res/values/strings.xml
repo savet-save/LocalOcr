@@ -14,7 +14,23 @@
     <string name="detect_btn_hint">detect image</string>
     <string name="pick_image_btn_hint">pick image</string>
     <string name="copy_content_btn_hint">copy select content</string>
-    
+
     <string name="ready_text_hint">Welcome to LocalOcr</string>
+
+    <!--  SettingFragment  -->
+    <string name="box_score_thresh_f">BoxScoreThresh:%.2f</string>
+    <string name="box_thresh_f">BoxThresh:%.2f</string>
+    <string name="box_un_clip_ratio_f">BoxUnClipRatio:%.1f</string>
+    <string name="len_ratio_f">MaxLenRatio:%d%%</string>
+    <string name="padding_f">Padding:%d</string>
+    <string name="do_angle">DoAngle</string>
+    <string name="most_angle">MostAngle</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="advanced_settings_hint">Advanced Settings</string>
+    <string name="auto_load_last_image_text">auto load last image(10min)</string>
+    <string name="fast_detect_text">fast detect</string>
+    <string name="reset">reset advanced settings</string>
+    <string name="open_advanced_setting_text">open advanced setting text</string>
 
 </resources>

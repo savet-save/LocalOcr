@@ -14,4 +14,20 @@
     <string name="copy_content_btn_hint">拷贝选中内容</string>
     <string name="ready_text_hint">欢迎使用离线文字识别</string>
 
+    <!--  SettingFragment  -->
+    <string name="box_score_thresh_f">文本框置信度:%.2f</string>
+    <string name="box_thresh_f">文本框阈值:%.2f</string>
+    <string name="box_un_clip_ratio_f">框大小倍率:%.1f</string>
+    <string name="len_ratio_f">缩放比例:%d%%</string>
+    <string name="padding_f">填充:%d</string>
+    <string name="do_angle">文字方向检测</string>
+    <string name="most_angle">角度投票</string>
+    <string name="off">关闭</string>
+    <string name="on">开启</string>
+    <string name="advanced_settings_hint">高级设置</string>
+    <string name="auto_load_last_image_text">自动加载最新图片(10min)</string>
+    <string name="fast_detect_text">快速识别</string>
+    <string name="reset">重置高级设置</string>
+    <string name="open_advanced_setting_text">开启高级设置</string>
+
 </resources>

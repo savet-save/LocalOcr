@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.savet.local.baselibrary.utils.LogUtils
+import com.savet.local.baselibrary.utils.PreferencesUtils
 import com.savet.local.baselibrary.utils.ToastUtils
 import com.savet.local.ocr.databinding.ActivityReadyBinding
 import com.savet.local.ocr.utils.OcrUtils
@@ -25,6 +26,9 @@ class ReadyActivity : AppCompatActivity() {
         super.onStart()
         // 进行一些初始化工作
         flow {
+            // 初始化Preferences
+            PreferencesUtils.init(application)
+
             // 初始化OCR识别引擎
             LogUtils.i(TAG, "init orc")
             OcrUtils.init(application) // 同步初始化，大约耗时700ms

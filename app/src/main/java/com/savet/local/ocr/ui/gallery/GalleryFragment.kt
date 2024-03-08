@@ -141,9 +141,12 @@ class GalleryFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         LogUtils.d(TAG, "onResume")
-        requestStoragePermission()
-        context?.getLatestImageUri()?.also {
-            showImage(it)
+        if (BaseSettingUtils.getAutoLoadImage()) {
+            requestStoragePermission {
+                context?.getLatestImageUri()?.also {
+                    showImage(it)
+                }
+            }
         }
     }
 

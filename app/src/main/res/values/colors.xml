@@ -8,6 +8,12 @@
     <color name="teal_800">#FF017776</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gold">#FFFFD700</color>
+    <color name="yellow">#FFFFFF00</color>
+    <color name="olive">#FF808000</color>
+    <color name="lime">#FF00FF00</color>
+    <color name="sea_green">#FF2E8B57</color>
+    <color name="spring_green">#FF3CB371</color>
 
     <!-- 浅灰色  -->
     <color name="light_gray">#D3D3D3</color>

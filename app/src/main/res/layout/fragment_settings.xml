@@ -6,17 +6,319 @@
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsFragment">
 
-    <TextView
-        android:id="@+id/text_home"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/setting_item_margin"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/gl1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/setting_item_small_margin"
+                android:text="@string/auto_load_last_image_text"
+                android:textSize="@dimen/setting_description_text_size" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/autoLoadImageSC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:textOff="@string/off"
+                android:textOn="@string/on" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/setting_item_small_margin"
+                android:text="@string/fast_detect_text"
+                android:textSize="@dimen/setting_description_text_size" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/fastDetectSC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:textOff="@string/off"
+                android:textOn="@string/on" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/setting_item_small_margin"
+                android:text="@string/open_advanced_setting_text"
+                android:textSize="@dimen/setting_description_text_size" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/openAdvancedSettingSW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:textOff="@string/off"
+                android:textOn="@string/on" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/resetBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reset"
+                android:textSize="@dimen/setting_description_text_size" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <!-- 分割线  -->
+    <TextView
+        android:id="@+id/advancedSettingsHintTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/advanced_settings_hint"
+        android:textSize="@dimen/setting_description_text_size"
+        app:layout_constraintBottom_toBottomOf="@id/gl1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/gl1" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/setting_item_small_margin"
+        android:layout_marginEnd="@dimen/setting_item_small_margin"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="@id/gl1"
+        app:layout_constraintEnd_toStartOf="@id/advancedSettingsHintTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/gl1" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/setting_item_small_margin"
+        android:layout_marginEnd="@dimen/setting_item_small_margin"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="@id/gl1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/advancedSettingsHintTV"
+        app:layout_constraintTop_toTopOf="@id/gl1" />
+
+
+    <!-- 高级设置 -->
+    <LinearLayout
+        android:id="@+id/advancedSettingsLL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/setting_item_margin"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/gl1"
+        app:layout_constraintVertical_bias="0.35">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/maxSideLenRatioTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:maxLines="1"
+                android:textSize="@dimen/setting_description_text_size"
+                tools:text="缩放比例:100%" />
+
+            <com.savet.local.baselibrary.view.MinSeekBar
+                android:id="@+id/maxSideLenRatioSeekBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:max="100"
+                android:progress="100"
+                app:minValue="10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/paddingTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:textSize="@dimen/setting_description_text_size"
+                tools:text="填充:50" />
+
+            <com.savet.local.baselibrary.view.MinSeekBar
+                android:id="@+id/paddingSeekBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:max="100"
+                android:progress="50" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/boxScoreThreshTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:textSize="@dimen/setting_description_text_size"
+                tools:text="框置信门限:0.60" />
+
+            <com.savet.local.baselibrary.view.MinSeekBar
+                android:id="@+id/boxScoreThreshSeekBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:max="100"
+                android:progress="60"
+                app:minValue="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/boxThreshTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:textSize="@dimen/setting_description_text_size"
+                tools:text="文本框阈值:0.30" />
+
+            <com.savet.local.baselibrary.view.MinSeekBar
+                android:id="@+id/boxThreshSeekBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:max="100"
+                android:progress="30"
+                app:minValue="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/unClipRatioTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:textSize="@dimen/setting_description_text_size"
+                tools:text="框大小倍率:2.0" />
+
+            <com.savet.local.baselibrary.view.MinSeekBar
+                android:id="@+id/scaleUnClipRatioSeekBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:max="30"
+                android:progress="10"
+                app:minValue="10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/setting_item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/do_angle"
+                android:textSize="@dimen/setting_description_text_size" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/doAngleSw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:textOff="@string/off"
+                android:textOn="@string/on" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:text="@string/most_angle"
+                android:textSize="@dimen/setting_description_text_size" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/mostAngleSw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:textOff="@string/off"
+                android:textOn="@string/on" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

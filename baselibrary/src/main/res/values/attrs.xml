@@ -11,5 +11,9 @@
         <attr name="scanLineColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="MinSeekBar">
+        <!-- set min value -->
+        <attr name="minValue" format="integer" />
+    </declare-styleable>
 
 </resources>
