@@ -113,6 +113,20 @@ object OcrUtils {
     }
 
     /**
+     * 载入快速识别配置
+     *
+     * 要求 : 快速识别模式需要打开，否则无效
+     * @see [BaseSettingUtils.getFastDetect]
+     */
+    fun loadFastDetect() {
+        if (!BaseSettingUtils.getFastDetect()) return
+        // 启动了快速识别
+        setMaxSideLenRatio(FastMap.MAX_SIDE_LEN_RATIO_F.value as Float)
+        setPadding(FastMap.PADDING_I.value as Int)
+        setDoAngle(FastMap.DO_ANGLE_B.value as Boolean)
+    }
+
+    /**
      * 初始化，调用前需要先初始化[PreferencesUtils]
      *
      * @param app 应用
@@ -127,6 +141,7 @@ object OcrUtils {
             }
             ocrEngine = OcrEngine(app)
             loadFromPreferences()
+            loadFastDetect()
             initSuccess = true
         }
     }
@@ -143,16 +158,10 @@ object OcrUtils {
             img.width, img.height, Bitmap.Config.ARGB_8888
         )
 
-        val fastDetect = BaseSettingUtils.getFastDetect();
-
         val maxSize = max(img.width, img.height)
         // 识别时会缩放原始图像，目标大小 resize = maxSideLen+padding*2
         // 缩放是等比例的，缩放系数 = resize/长的边
-        val maxSideLen  = if (fastDetect) {
-            (0.6 * maxSize). toInt()
-        } else {
-            (maxSideLenRatio * maxSize).toInt()
-        }
+        val maxSideLen  = (maxSideLenRatio * maxSize).toInt()
 
         LogUtils.i("selectedImg=[h:${img.height},w:${img.width}] ${img.config}")
         val start = System.currentTimeMillis()

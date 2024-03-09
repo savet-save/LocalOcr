@@ -102,9 +102,7 @@ class SettingsFragment : Fragment(), MinSeekBar.OnMinSeekBarChangeListener {
         binding.fastDetectSC.setOnCheckedChangeListener { _, isChecked ->
             BaseSettingUtils.setFastDetect(isChecked)
             if (isChecked) {
-                OcrUtils.setMaxSideLenRatio(OcrUtils.FastMap.MAX_SIDE_LEN_RATIO_F.value as Float)
-                OcrUtils.setPadding(OcrUtils.FastMap.PADDING_I.value as Int)
-                OcrUtils.setDoAngle(OcrUtils.FastMap.DO_ANGLE_B.value as Boolean)
+                OcrUtils.loadFastDetect()
             }
             updateAll() // 重新载入
         }
