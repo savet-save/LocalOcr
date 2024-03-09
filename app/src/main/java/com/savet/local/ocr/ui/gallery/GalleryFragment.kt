@@ -3,6 +3,7 @@ package com.savet.local.ocr.ui.gallery
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,12 +24,13 @@ import com.savet.local.baselibrary.utils.LogUtils
 import com.savet.local.baselibrary.utils.ToastUtils
 import com.savet.local.ocr.R
 import com.savet.local.ocr.databinding.FragmentGalleryBinding
+import com.savet.local.ocr.type.ImageData
+import com.savet.local.ocr.type.TakePhotoContract
 import com.savet.local.ocr.ui.adapter.DetectResultAdapter
 import com.savet.local.ocr.ui.manager.ControlScrollLayoutManager
 import com.savet.local.ocr.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import java.util.*
 
 
 class GalleryFragment : Fragment() {
@@ -48,9 +50,9 @@ class GalleryFragment : Fragment() {
     private val galleryViewModel get() = _galleryViewModel!!
 
     /**
-     * 保存选择图像的uri
+     * 保存选择/拍摄的图像
      */
-    private var savedUri: Uri? = null
+    private var savedImage: ImageData = ImageData()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,16 +97,28 @@ class GalleryFragment : Fragment() {
             pickImageFromGallery()
         }
         TooltipCompat.setTooltipText(binding.pickImageButton, getText(R.string.pick_image_btn_hint))
+
+        binding.takeImageButton.setOnClickListener {
+            takeImage { uri ->
+                showImage(uri)
+            }
+        }
     }
 
 
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var getImageLauncher: ActivityResultLauncher<Intent>
+    private lateinit var takePictureLauncher: ActivityResultLauncher<Unit?>
 
     /**
-     * 请求权限成功执行
+     * 请求权限成功时执行
      */
-    private var requestPermissionSuccess: () -> Unit = {}
+    private var requestReadPermissionSuccess: (() -> Unit)? = null
+
+    /**
+     * 拍摄图片成功时执行
+     */
+    private var takeImageSuccess: ((Uri) -> Unit)? = null
 
     /**
      * 统一注册
@@ -130,11 +144,18 @@ class GalleryFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
                 if (isGranted) {
                     // 用户授予了权限
-                    requestPermissionSuccess()
+                    requestReadPermissionSuccess?.let { it() }
                 } else {
                     // 用户拒绝了权限，可以给出相应提示
                     ToastUtils.showToast("权限获取失败")
                 }
+            }
+
+        takePictureLauncher =
+            registerForActivityResult(TakePhotoContract()) { uri ->
+                // bitmap from camera
+                uri ?: return@registerForActivityResult
+                takeImageSuccess?.let { it(uri) }
             }
     }
 
@@ -155,7 +176,17 @@ class GalleryFragment : Fragment() {
         Glide.with(this@GalleryFragment)
             .load(imageUri)
             .into(binding.detectImageView)
-        savedUri = imageUri
+        savedImage.date = imageUri
+        savedImage.imageType = ImageData.ImageType.URI
+    }
+
+    private fun showImage(image: Bitmap) {
+        binding.detectImageView.visibility = View.VISIBLE
+        Glide.with(this@GalleryFragment)
+            .load(image)
+            .into(binding.detectImageView)
+        savedImage.date = image
+        savedImage.imageType = ImageData.ImageType.BITMAP
     }
 
     /**
@@ -166,7 +197,7 @@ class GalleryFragment : Fragment() {
     private fun requestStoragePermission(hasPermission: () -> Unit = {}) {
         val readStoragePermission: String = Manifest.permission.READ_EXTERNAL_STORAGE
         if (!requireContext().isAllGranted(readStoragePermission)) {
-            this.requestPermissionSuccess = hasPermission
+            this.requestReadPermissionSuccess = hasPermission
             requestPermissionLauncher.launch(readStoragePermission)
         } else {
             hasPermission()
@@ -188,24 +219,44 @@ class GalleryFragment : Fragment() {
 
     }
 
+    /**
+     * 从相册中获得图片
+     *
+     * @param getImage 获得图片时执行
+     */
+    private fun takeImage(getImage: (Uri) -> Unit) {
+        takeImageSuccess = getImage
+        takePictureLauncher.launch(null)
+    }
+
     // 识别图像
     private fun detect() {
 
         flow {
-            savedUri ?: return@flow
-            val bitmap = Glide.with(this@GalleryFragment)
-                .asBitmap()
-                .skipMemoryCache(true)
-                .load(savedUri)
-                .submit()
-                .get()
-            val ocrResult = OcrUtils.detect(bitmap)
-            emit(ocrResult)
+            savedImage.date ?: return@flow
+            when (savedImage.imageType) {
+                ImageData.ImageType.URI -> {
+                    val bitmap = Glide.with(this@GalleryFragment)
+                        .asBitmap()
+                        .skipMemoryCache(true)
+                        .load(savedImage.date as Uri)
+                        .submit()
+                        .get()
+
+                    val ocrResult = OcrUtils.detect(bitmap)
+                    emit(ocrResult)
+                }
+                ImageData.ImageType.BITMAP -> {
+                    val ocrResult = OcrUtils.detect(savedImage.date as Bitmap)
+                    emit(ocrResult)
+                }
+            }
         }.flowOn(Dispatchers.IO)
             .onStart {
                 controlLoading(true)
                 ToastUtils.showToast("开始识别")
             }.onEach {
+                OcrUtils.recycleOcrResultBitmap(it)
                 // 避免识别过程中切换页面导致的NullPointerException
                 val bind = _binding ?: return@onEach
                 bind.copyContentButton.visibility = View.VISIBLE

@@ -45,12 +45,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="invisible"
-        app:scanLineWidth="3dp"
-        app:scanLineColor="@color/pale_green"
         app:layout_constraintBottom_toBottomOf="@id/detectImageView"
         app:layout_constraintEnd_toEndOf="@id/detectImageView"
         app:layout_constraintStart_toStartOf="@id/detectImageView"
-        app:layout_constraintTop_toTopOf="@id/detectImageView" />
+        app:layout_constraintTop_toTopOf="@id/detectImageView"
+        app:scanLineColor="@color/pale_green"
+        app:scanLineWidth="3dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detectResultRV"
@@ -65,6 +65,7 @@
         tools:itemCount="5"
         tools:listitem="@layout/item_detect_result" />
 
+    <!-- Ocr识别  -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/detectButton"
         android:layout_width="wrap_content"
@@ -79,6 +80,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_menu_ocr_detect" />
 
+    <!-- 复制所选内容  -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/copyContentButton"
         android:layout_width="wrap_content"
@@ -94,6 +96,7 @@
         app:layout_constraintStart_toStartOf="@id/detectResultRV"
         app:srcCompat="@drawable/ic_menu_copy" />
 
+    <!-- 选择图片  -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/pickImageButton"
         android:layout_width="wrap_content"
@@ -107,5 +110,20 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_menu_pick_image" />
+
+    <!-- 拍照 -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/takeImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/content_description_function"
+        app:layout_anchor="@id/detectImageView"
+        app:layout_constraintBottom_toTopOf="@id/detectButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_menu_camera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

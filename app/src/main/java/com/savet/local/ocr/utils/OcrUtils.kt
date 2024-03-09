@@ -167,21 +167,11 @@ object OcrUtils {
     }
 
     /**
-     * 异步检查图像数据，返回一个flow
-     *
-     * @param img 图像数据
-     * @return 识别的结果流
-     */
-    fun flowDetect(img: Bitmap) = flow<OcrResult> {
-        emit(detect(img))
-    }.flowOn(Dispatchers.IO)
-
-    /**
      * 回收检测结果
      *
      * @param result OcrResult
      */
-    fun recycleOcrResult(result: OcrResult) {
+    fun recycleOcrResultBitmap(result: OcrResult) {
         if (!result.boxImg.isRecycled) {
             result.boxImg.recycle()
         }
