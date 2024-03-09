@@ -7,9 +7,9 @@
 
     <string name="menu_settings">Setting</string>
     <string name="menu_gallery">Gallery</string>
-    <string name="menu_camera">Take Image</string>
+    <string name="menu_info">About</string>
     <string name="content_description_function">function</string>
-    <string name="detect_text_hint">Please select the image you want to by \'+\'</string>
+    <string name="detect_text_hint">Please select the image you want to by\n\'+\' or \'Camera\'</string>
 
     <string name="detect_btn_hint">detect image</string>
     <string name="pick_image_btn_hint">pick image</string>
@@ -32,5 +32,15 @@
     <string name="fast_detect_text">fast detect</string>
     <string name="reset">reset advanced settings</string>
     <string name="open_advanced_setting_text">open advanced setting text</string>
+
+    <!-- InfoFragment  -->
+    <string name="contributors">Contributors</string>
+    <string name="contributors_summary">savet</string>
+    <string name="version_name">Version name</string>
+    <string name="default_version" translatable="false">1.0.0</string>
+    <string name="send_email">Send email</string>
+    <string name="email" translatable="false">savet_save@163.com</string>
+    <string name="project_github">Github</string>
+    <string name="project_github_addr" translatable="false">https://github.com/savet-save/LocalOcr</string>
 
 </resources>

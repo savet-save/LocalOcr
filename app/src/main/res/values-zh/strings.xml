@@ -4,11 +4,11 @@
     <string name="action_settings">设置</string>
     <string name="menu_settings">设置</string>
     <string name="menu_gallery">相册</string>
-    <string name="menu_camera">拍照</string>
+    <string name="menu_info">关于</string>
     <string name="content_description_function">功能</string>
     <string name="nav_header_desc">savet头像</string>
 
-    <string name="detect_text_hint">请通过按钮\'+\'选择需要识别图片</string>
+    <string name="detect_text_hint">请通过按钮\'+\'或者\'相机\'\n选择需要识别图片</string>
     <string name="detect_btn_hint">识别图像</string>
     <string name="pick_image_btn_hint">选择图像</string>
     <string name="copy_content_btn_hint">拷贝选中内容</string>
@@ -29,5 +29,10 @@
     <string name="fast_detect_text">快速识别</string>
     <string name="reset">重置高级设置</string>
     <string name="open_advanced_setting_text">开启高级设置</string>
+    <string name="contributors">开发人员</string>
+    <string name="contributors_summary">savet</string>
+    <string name="version_name">版本号</string>
+    <string name="send_email">联系邮箱</string>
+    <string name="project_github">Github</string>
 
 </resources>

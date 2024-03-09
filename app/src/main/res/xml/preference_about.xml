@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:key="contributors"
+        android:summary="@string/contributors_summary"
+        android:title="@string/contributors"
+        app:iconSpaceReserved="false">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://github.com/savet-save?tab=repositories" />
+    </Preference>
+
+    <Preference
+        android:key="version_name"
+        android:title="@string/version_name"
+        android:summary="@string/default_version"
+        app:allowDividerAbove="false"
+        app:allowDividerBelow="false"
+        app:iconSpaceReserved="false"/>
+
+    <Preference
+        android:key="send_email"
+        android:title="@string/send_email"
+        android:summary="@string/email"
+        app:allowDividerAbove="false"
+        app:allowDividerBelow="false"
+        app:iconSpaceReserved="false"/>
+
+    <Preference
+        android:key="project_github"
+        android:summary="@string/project_github_addr"
+        android:title="@string/project_github"
+        app:iconSpaceReserved="false">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://github.com/savet-save/LocalOcr" />
+    </Preference>
+
+</PreferenceScreen>
