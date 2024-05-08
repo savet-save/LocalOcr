@@ -7,12 +7,13 @@ import androidx.lifecycle.lifecycleScope
 import com.savet.local.baselibrary.utils.LogUtils
 import com.savet.local.baselibrary.utils.PreferencesUtils
 import com.savet.local.baselibrary.utils.ToastUtils
+import com.savet.local.ocr.base.BaseActivity
 import com.savet.local.ocr.databinding.ActivityReadyBinding
 import com.savet.local.ocr.utils.OcrUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
-class ReadyActivity : AppCompatActivity() {
+class ReadyActivity : BaseActivity() {
     companion object {
         private const val TAG: String = "ReadyActivity"
     }

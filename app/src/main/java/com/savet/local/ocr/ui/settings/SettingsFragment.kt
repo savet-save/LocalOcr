@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.savet.local.baselibrary.utils.LogUtils
 import com.savet.local.baselibrary.view.MinSeekBar
 import com.savet.local.ocr.R
+import com.savet.local.ocr.base.BaseFragment
 import com.savet.local.ocr.databinding.FragmentSettingsBinding
 import com.savet.local.ocr.utils.BaseSettingUtils
 import com.savet.local.ocr.utils.OcrUtils
 
-class SettingsFragment : Fragment(), MinSeekBar.OnMinSeekBarChangeListener {
+class SettingsFragment : BaseFragment(), MinSeekBar.OnMinSeekBarChangeListener {
 
     companion object {
         private const val TAG: String = "SettingsFragment"

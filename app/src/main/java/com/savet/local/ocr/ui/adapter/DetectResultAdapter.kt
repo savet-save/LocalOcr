@@ -143,6 +143,21 @@ class DetectResultAdapter(private var dataList: List<AdapterData>) :
         notifyItemRangeInserted(0, dataList.size)
     }
 
+    /**
+     * 清理所有选择状态
+     * @return true - 至少清理了一个, false - 一个都没清理
+     */
+    fun clearAllSelect() : Boolean {
+        var cleared = false
+        dataList.forEachIndexed { index, _ ->
+            if(getSelect(index)) {
+                setSelect(index)
+                cleared = true
+            }
+        }
+        return cleared
+    }
+
     inner class DetectResultHolder(private val bind: ItemDetectResultBinding) :
         RecyclerView.ViewHolder(bind.root) {
 

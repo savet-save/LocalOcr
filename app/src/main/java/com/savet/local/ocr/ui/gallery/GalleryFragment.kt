@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.TooltipCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -23,6 +22,8 @@ import com.google.android.flexbox.JustifyContent
 import com.savet.local.baselibrary.utils.LogUtils
 import com.savet.local.baselibrary.utils.ToastUtils
 import com.savet.local.ocr.R
+import com.savet.local.ocr.base.BackPressedListener
+import com.savet.local.ocr.base.BaseFragment
 import com.savet.local.ocr.databinding.FragmentGalleryBinding
 import com.savet.local.ocr.type.ImageData
 import com.savet.local.ocr.type.TakePhotoContract
@@ -33,7 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
 
-class GalleryFragment : Fragment() {
+class GalleryFragment : BaseFragment() {
 
     companion object {
         private const val TAG: String = "GalleryFragment"
@@ -341,5 +342,12 @@ class GalleryFragment : Fragment() {
         binding.detectResultRV.adapter = DetectResultAdapter(emptyList())
     }
 
-
+    override fun handleBackPressed(): Boolean {
+        val adapter = binding.detectResultRV.adapter
+        if (adapter != null && adapter is DetectResultAdapter && adapter.clearAllSelect())  {
+            LogUtils.d(TAG, "handleBackPressed true")
+            return true // 清理了选中状态
+        }
+        return super.handleBackPressed()
+    }
 }
