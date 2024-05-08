@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.TooltipCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -340,6 +341,15 @@ class GalleryFragment : BaseFragment() {
         binding.detectResultRV.setHasFixedSize(true) // ItemView的高度固定
         binding.detectResultRV.setItemViewCacheSize(16) // 设置RecyclerView缓存
         binding.detectResultRV.adapter = DetectResultAdapter(emptyList())
+        binding.detectResultRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    LogUtils.d(TAG, "detectResultRV request layout")
+                    binding.detectResultRV.requestLayout() // 处理部分情况下显示位置不正确的问题
+                }
+            }
+        })
     }
 
     override fun handleBackPressed(): Boolean {
