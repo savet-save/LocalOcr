@@ -11,8 +11,8 @@ android {
         applicationId "com.savet.local.ocr"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode gitCommitNum()
+        versionName "1." + releaseTime()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,7 +36,7 @@ android {
     sourceSets {
         main {
             assets {
-                srcDirs 'src\\main\\assets'
+                srcDirs 'src/main/assets'
             }
         }
     }
@@ -78,8 +78,41 @@ dependencies {
 
     // module base-library
     implementation project(path: ':baselibrary')
+    // module networkd
+    implementation project(':network')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+/**
+ * 自定义功能区
+ */
+
+// 自定义任务-打印编译相关信息
+tasks.register('getBuildConfig') {
+    println "time: ${releaseTime()}\ncommit time: ${gitCommitNum()}"
+}
+
+/**
+ * 获取格式化时间, 如24.050916
+ * @return 格式化(yy.MMddHH)的时间字符串
+ */
+static String releaseTime() {
+    return new Date().format("yy.MMddHH", TimeZone.getTimeZone("GMT+8"))
+}
+
+/**
+ * 获取git提交次数
+ * @return 提交的次数, 如果有异常则抛出并返回0
+ */
+static Integer gitCommitNum() {
+    try {
+        return Integer.parseInt('git rev-list HEAD --count'.execute().text.trim())
+    } catch (e) {
+        e.printStackTrace()
+        println 'warning : pls use git repository!'
+    }
+    return 0
 }

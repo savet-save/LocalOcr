@@ -87,6 +87,36 @@ object LogUtils {
     }
 
     /**
+     * 输出更为详细的错误日志
+     */
+    fun detailError(msg: String?) {
+        e(getLogDetail(msg))
+    }
+
+    /**
+     * 获取行数及方法名
+     */
+    private fun getLogDetail(msg: String?): String {
+        if (msg == null) {
+            return ""
+        }
+        val stackTrace = Thread.currentThread().stackTrace
+        for (st in stackTrace) {
+            if (st.isNativeMethod) {
+                continue
+            }
+            if (st.className == Thread::class.java.name) {
+                continue
+            }
+            if (st.className == LogUtils::class.java.name) {
+                continue
+            }
+            return "[(" + st.fileName + ":" + st.lineNumber + ")" + st.methodName + "] ->" + msg
+        }
+        return msg
+    }
+
+    /**
      * 调试信息等级枚举
      *
      * @param level 等级值，依次为VERBOSE<DEBUG<INFO<WARING<ERROR

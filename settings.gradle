@@ -16,3 +16,5 @@ rootProject.name = "LocalOcr"
 include ':app'
 // 基础库
 include ':baselibrary'
+// 网络
+include ':network'
