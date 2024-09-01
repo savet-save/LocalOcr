@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.TooltipCompat
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -23,7 +23,6 @@ import com.google.android.flexbox.JustifyContent
 import com.savet.local.baselibrary.utils.LogUtils
 import com.savet.local.baselibrary.utils.ToastUtils
 import com.savet.local.ocr.R
-import com.savet.local.ocr.base.BackPressedListener
 import com.savet.local.ocr.base.BaseFragment
 import com.savet.local.ocr.databinding.FragmentGalleryBinding
 import com.savet.local.ocr.type.ImageData
@@ -47,9 +46,7 @@ class GalleryFragment : BaseFragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var _galleryViewModel: GalleryViewModel? = null
-
-    private val galleryViewModel get() = _galleryViewModel!!
+    private val galleryViewModel: GalleryViewModel by viewModels()
 
     /**
      * 保存选择/拍摄的图像
@@ -61,21 +58,25 @@ class GalleryFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _galleryViewModel =
-            ViewModelProvider(this)[GalleryViewModel::class.java]
-
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        initButton()
-
-        initRecyclerView()
 
         registerForActivity {
             showImage(it)
         }
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    private fun initView() {
+        initButton()
+
+        initRecyclerView()
     }
 
     private fun initButton() {
@@ -164,7 +165,7 @@ class GalleryFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         LogUtils.d(TAG, "onResume")
-        if (BaseSettingUtils.getAutoLoadImage()) {
+        if (BaseSettingUtils.getAutoLoadImage() && !hasDetectResult()) {
             requestStoragePermission {
                 context?.getLatestImageUri()?.also {
                     showImage(it)
@@ -222,6 +223,16 @@ class GalleryFragment : BaseFragment() {
     }
 
     /**
+     * 是否有显示识别结果
+     *
+     * @return true - 有
+     */
+    private fun hasDetectResult() : Boolean {
+        // todo : 暂时如此判断是否有检查结果
+        return (binding.detectResultRV.adapter?.itemCount ?:  0) > 0;
+    }
+
+    /**
      * 从相册中获得图片
      *
      * @param getImage 获得图片时执行
@@ -266,7 +277,7 @@ class GalleryFragment : BaseFragment() {
                 // 处理识别结果并显示
                 flow {
                     // 避免识别过程中切换页面导致的NullPointerException
-                    val viewModel = _galleryViewModel ?: return@flow
+                    val viewModel = galleryViewModel ?: return@flow
                     emit(viewModel.getDetectAdapterDateList(it))
                 }.flowOn(Dispatchers.Default)
                     .onEach { array ->
@@ -314,7 +325,6 @@ class GalleryFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        _galleryViewModel = null
     }
 
     /**
