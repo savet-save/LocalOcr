@@ -277,7 +277,7 @@ class GalleryFragment : BaseFragment() {
                 // 处理识别结果并显示
                 flow {
                     // 避免识别过程中切换页面导致的NullPointerException
-                    val viewModel = galleryViewModel ?: return@flow
+                    val viewModel = galleryViewModel
                     emit(viewModel.getDetectAdapterDateList(it))
                 }.flowOn(Dispatchers.Default)
                     .onEach { array ->

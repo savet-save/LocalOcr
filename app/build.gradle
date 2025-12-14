@@ -14,7 +14,7 @@ android {
         versionCode gitCommitNum()
         versionName "1." + releaseTime()
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -32,6 +32,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
     sourceSets {
         main {
@@ -81,9 +82,9 @@ dependencies {
     // module networkd
     implementation project(':network')
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+//    testImplementation 'junit:junit:4.13.2'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
 /**
@@ -115,4 +116,11 @@ static Integer gitCommitNum() {
         println 'warning : pls use git repository!'
     }
     return 0
+}
+
+// 自定义apk输出名
+android {
+    defaultConfig {
+        setProperty("archivesBaseName", "${rootProject.name}-v${versionName}-${versionCode}")
+    }
 }

@@ -15,7 +15,7 @@
 <img src="https://github.com/savet-save/LocalOcr/assets/65898046/2a9e7a02-7345-4183-986f-ec9a5b223687 ," width="270">
 
 ## 运行要求
-- android 7.0及以上
+- android 2025.2.2及以上
 - 2G的RAM
 
 ## Grateful-感谢
