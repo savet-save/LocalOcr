@@ -17,10 +17,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.savet.local.baselibrary.utils.LogUtils
 import com.savet.local.baselibrary.utils.ToastUtils
 import com.savet.local.ocr.R
@@ -29,7 +25,7 @@ import com.savet.local.ocr.databinding.FragmentGalleryBinding
 import com.savet.local.ocr.type.ImageData
 import com.savet.local.ocr.type.TakePhotoContract
 import com.savet.local.ocr.ui.adapter.DetectResultAdapter
-import com.savet.local.ocr.ui.manager.ControlScrollLayoutManager
+import com.savet.local.ocr.ui.manager.ControlScrollFlowLayoutManager
 import com.savet.local.ocr.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -335,11 +331,8 @@ class GalleryFragment : BaseFragment() {
      *
      * @return FlexboxLayoutManager
      */
-    private fun getLayoutManager(): FlexboxLayoutManager {
-        val layoutManager = ControlScrollLayoutManager(requireContext())
-        layoutManager.flexDirection = FlexDirection.ROW //从左往右, 从上到下
-        layoutManager.flexWrap = FlexWrap.WRAP //自动换行
-        layoutManager.justifyContent = JustifyContent.FLEX_START //主轴(水平)左对齐
+    private fun getLayoutManager(): RecyclerView.LayoutManager {
+        val layoutManager = ControlScrollFlowLayoutManager(requireContext())
         return layoutManager
     }
 
@@ -357,10 +350,10 @@ class GalleryFragment : BaseFragment() {
         binding.detectResultRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    LogUtils.d(TAG, "detectResultRV request layout")
-                    binding.detectResultRV.requestLayout() // 处理部分情况下显示位置不正确的问题
-                }
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    LogUtils.d(TAG, "detectResultRV request layout")
+//                    binding.detectResultRV.requestLayout() // 处理部分情况下显示位置不正确的问题
+//                }
             }
         })
     }

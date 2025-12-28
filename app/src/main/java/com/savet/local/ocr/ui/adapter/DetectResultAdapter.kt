@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexboxLayoutManager
 import com.savet.local.ocr.databinding.ItemDetectResultBinding
-import com.savet.local.ocr.ui.manager.ControlScrollLayoutManager
+import com.savet.local.ocr.ui.manager.ControlScrollFlowLayoutManager
+import com.savet.local.ocr.ui.manager.FlowLayoutParams
 import com.savet.local.ocr.utils.dpToPx
 import com.savet.local.ocr.utils.stopInertiaRolling
 import kotlin.math.max
@@ -166,16 +166,17 @@ class DetectResultAdapter(private var dataList: List<AdapterData>) :
         fun bindData(data: AdapterData) {
             textView.text = data.text
             textView.isSelected = data.isSelect
-            when (data.type) {
-                // 进行实际换行操作[Type.RELINE]
-                Type.RELINE -> {
-                    val layoutParams = bind.root.layoutParams as FlexboxLayoutManager.LayoutParams
-                    layoutParams.isWrapBefore = true
-                }
-                else -> {
-//                    LogUtils.d(TAG, "$data")
-                    // nothing
-                }
+
+            val root = bind.root
+            val lp = root.layoutParams
+
+            if (lp is FlowLayoutParams) {
+                lp.wrapBefore = data.type == Type.RELINE
+            } else {
+                // 极端兜底（理论上加了 generateLayoutParams 后不会进来）
+                val newLp = FlowLayoutParams(lp)
+                newLp.wrapBefore = data.type == Type.RELINE
+                root.layoutParams = newLp
             }
         }
 
@@ -317,11 +318,11 @@ class DetectResultAdapter(private var dataList: List<AdapterData>) :
 
                     if (changeSelectStatus) { // 有改变选中状态
                         rv.stopInertiaRolling() // 取消当前的惯性滑动
-                        rv.requestLayout() // 修复部分情况下item显示不全的问题
+//                        rv.requestLayout() // 修复部分情况下item显示不全的问题
                     }
 
                     // 允许滑动
-                    (rv.layoutManager as ControlScrollLayoutManager).enableScroll = true
+                    (rv.layoutManager as ControlScrollFlowLayoutManager).enableScroll = true
 
                     // 重置
                     resetFlag()
@@ -336,7 +337,7 @@ class DetectResultAdapter(private var dataList: List<AdapterData>) :
                             val detectResultAdapter = (rv.adapter as DetectResultAdapter)
                             selectStatus = detectResultAdapter.getSelect(lastItemIndex)
                             // 禁止滑动
-                            (rv.layoutManager as ControlScrollLayoutManager).enableScroll = false
+                            (rv.layoutManager as ControlScrollFlowLayoutManager).enableScroll = false
                         }
                     }
                 }
@@ -374,7 +375,7 @@ class DetectResultAdapter(private var dataList: List<AdapterData>) :
                             changeSelectStatus = true
                         }
                         // 禁止滑动
-                        (rv.layoutManager as ControlScrollLayoutManager).enableScroll = false
+                        (rv.layoutManager as ControlScrollFlowLayoutManager).enableScroll = false
                     }
 
                     // 最后保存view的索引所在位置

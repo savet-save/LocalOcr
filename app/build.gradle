@@ -96,7 +96,7 @@ dependencies {
 
     // flexbox library
     // 提供流式布局
-    implementation libs.flexbox
+//    implementation libs.flexbox
 
     // module base-library
     implementation project(path: ':baselibrary')
