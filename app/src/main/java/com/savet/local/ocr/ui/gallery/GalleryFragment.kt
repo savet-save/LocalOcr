@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -198,10 +199,14 @@ class GalleryFragment : BaseFragment() {
      * @param hasPermission 拥有权限或请求成功时执行
      */
     private fun requestStoragePermission(hasPermission: () -> Unit = {}) {
-        val readStoragePermission: String = Manifest.permission.READ_EXTERNAL_STORAGE
-        if (!requireContext().isAllGranted(readStoragePermission)) {
-            this.requestReadPermissionSuccess = hasPermission
-            requestPermissionLauncher.launch(readStoragePermission)
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+
+        if (!requireContext().isAllGranted(permission)) {
+            requestPermissionLauncher.launch(permission)
         } else {
             hasPermission()
         }
@@ -212,14 +217,11 @@ class GalleryFragment : BaseFragment() {
      *
      */
     private fun pickImageFromGallery() {
-        requestStoragePermission {
-            val intent = Intent(Intent.ACTION_PICK).apply {
-                type = "image/*"
-            }
-
-            getImageLauncher.launch(intent)
+        val intent = Intent(Intent.ACTION_PICK).apply {
+            type = "image/*"
         }
 
+        getImageLauncher.launch(intent)
     }
 
     /**
@@ -227,9 +229,9 @@ class GalleryFragment : BaseFragment() {
      *
      * @return true - 有
      */
-    private fun hasDetectResult() : Boolean {
+    private fun hasDetectResult(): Boolean {
         // todo : 暂时如此判断是否有检查结果
-        return (binding.detectResultRV.adapter?.itemCount ?:  0) > 0;
+        return (binding.detectResultRV.adapter?.itemCount ?: 0) > 0;
     }
 
     /**
@@ -259,6 +261,7 @@ class GalleryFragment : BaseFragment() {
                     val ocrResult = OcrUtils.detect(bitmap)
                     emit(ocrResult)
                 }
+
                 ImageData.ImageType.BITMAP -> {
                     val ocrResult = OcrUtils.detect(savedImage.date as Bitmap)
                     emit(ocrResult)
@@ -364,7 +367,7 @@ class GalleryFragment : BaseFragment() {
 
     override fun handleBackPressed(): Boolean {
         val adapter = binding.detectResultRV.adapter
-        if (adapter != null && adapter is DetectResultAdapter && adapter.clearAllSelect())  {
+        if (adapter != null && adapter is DetectResultAdapter && adapter.clearAllSelect()) {
             LogUtils.d(TAG, "handleBackPressed true")
             return true // 清理了选中状态
         }

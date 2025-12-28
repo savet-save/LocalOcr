@@ -1,34 +1,62 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
+
+def props = new Properties()
+def lp = rootProject.file("local.properties")
+if (lp.exists()) {
+    props.load(lp.newInputStream())
+}
+def hasSigning = props.containsKey("KEYSTORE_FILE") &&
+        props.getProperty("KEYSTORE_FILE")?.trim()
+println("load local sign config : $hasSigning")
 
 android {
     namespace 'com.savet.local.ocr'
-    compileSdk 33
+    compileSdk {
+        version = release(36)
+    }
 
     defaultConfig {
         applicationId "com.savet.local.ocr"
         minSdk 24
-        targetSdk 33
+        targetSdk 36
         versionCode gitCommitNum()
         versionName "1." + releaseTime()
+    }
 
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    if(hasSigning) {
+    signingConfigs {
+        release {
+            storeFile file(props.get("KEYSTORE_FILE"))
+            storePassword props.get("KEYSTORE_PASSWORD")
+            keyAlias props.get("KEY_ALIAS")
+            keyPassword props.get("KEY_ALIAS_PASSWORD")
+        }
+    }
     }
 
     buildTypes {
+        debug {
+            if (hasSigning) {
+                signingConfig signingConfigs.release
+            }
+        }
         release {
+            if (hasSigning) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding true
@@ -47,44 +75,34 @@ dependencies {
     // include jar/aar
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
     // constraint layout
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation libs.androidx.constraintlayout
     // material UI
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation libs.material
     // livedata
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
+    implementation libs.androidx.lifecycle.livedata.ktx
     // ViewModel
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+    implementation libs.androidx.lifecycle.viewmodel.ktx
     // navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
     // preference fragment
-    implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation libs.androidx.preference.ktx
 
-    // sketch library(image)
-    def sketch_version = '3.3.0'
-    // 提供了 Sketch 的核心功能以及单例和依赖此单例实现的一些便捷的扩展函数，
-    // implementation "io.github.panpf.sketch3:sketch:${sketch_version}"
-
-    // zoom-image library
-    def zoom_version = '1.0.2'
     // 提供缩放、平移、定位、旋转、超大图子采样功能
-    implementation "io.github.panpf.zoomimage:zoomimage-view-glide:${zoom_version}"
+    implementation libs.zoomimage.view.glide
 
     // flexbox library
     // 提供流式布局
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation libs.flexbox
 
     // module base-library
     implementation project(path: ':baselibrary')
     // module networkd
     implementation project(':network')
 
-//    testImplementation 'junit:junit:4.13.2'
-//    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
 /**
