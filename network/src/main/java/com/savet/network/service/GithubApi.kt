@@ -1,5 +1,6 @@
 package com.savet.network.service
 
+import com.savet.local.baselibrary.utils.LogUtils
 import com.savet.network.BaseCallback
 import com.savet.network.ServiceApi
 import com.savet.network.bean.GetReleaseResponse
@@ -10,7 +11,7 @@ import retrofit2.http.GET
 /**
  * GitHub上的api
  */
-interface GithubApi: ServiceApi {
+interface GithubApi : ServiceApi {
 
     /**
      * 获取所有的releases版本
@@ -31,13 +32,16 @@ interface GithubApi: ServiceApi {
 }
 
 object GithubRequest {
+
     /**
      * 获取最新的Releases
+     * 在主线程进行回调
      */
-    fun getReleasesLatest(callback : Callback) {
+    fun getReleasesLatest(callback: Callback) {
         ApiManager.createGithub(GithubApi::class.java).getReleasesLatest()
-            .enqueue(object :  BaseCallback<GetReleaseResponse> {
+            .enqueue(object : BaseCallback<GetReleaseResponse> {
                 override fun success(response: GetReleaseResponse) {
+//                    LogUtils.d("ThreadCheck", Thread.currentThread().name)
                     callback.success(response)
                 }
 

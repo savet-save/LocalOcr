@@ -14,6 +14,7 @@ import com.savet.local.ocr.utils.OcrUtils.setMostAngle
 import com.savet.local.ocr.utils.OcrUtils.setPadding
 import com.savet.local.ocr.utils.OcrUtils.setUnClipRatio
 import kotlin.math.max
+import androidx.core.graphics.createBitmap
 
 object OcrUtils {
 
@@ -158,9 +159,7 @@ object OcrUtils {
      */
     fun detect(img: Bitmap): OcrResult {
         // 输出的图像
-        val boxImg: Bitmap = Bitmap.createBitmap(
-            img.width, img.height, Bitmap.Config.ARGB_8888
-        )
+        val boxImg: Bitmap = createBitmap(img.width, img.height)
 
         val maxSize = max(img.width, img.height)
         // 识别时会缩放原始图像，目标大小 resize = maxSideLen+padding*2
