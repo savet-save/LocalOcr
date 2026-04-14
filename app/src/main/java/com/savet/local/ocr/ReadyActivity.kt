@@ -2,8 +2,6 @@ package com.savet.local.ocr
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -14,7 +12,11 @@ import com.savet.local.ocr.base.BaseActivity
 import com.savet.local.ocr.databinding.ActivityReadyBinding
 import com.savet.local.ocr.utils.OcrUtils
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class ReadyActivity : BaseActivity() {
     companion object {

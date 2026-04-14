@@ -1,7 +1,6 @@
 package com.savet.network.service
 
 import com.savet.network.BaseCallback
-import com.savet.network.BaseResponse
 import com.savet.network.ServiceApi
 import com.savet.network.bean.GetReleaseResponse
 import com.savet.network.manager.ApiManager

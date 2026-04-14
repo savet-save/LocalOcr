@@ -19,7 +19,7 @@ class GalleryViewModel : ViewModel() {
      */
     fun getDetectAdapterDateList(ocrResult: OcrResult): ArrayList<DetectResultAdapter.AdapterData> {
         val resultList: ArrayList<DetectResultAdapter.AdapterData> = ArrayList()
-        var maxYInLine = if (ocrResult.textBlocks.size > 0) ocrResult.textBlocks[0].boxPoint[2].y else -1 // 左上角(0, 0)
+        var maxYInLine = if (ocrResult.textBlocks.isNotEmpty()) ocrResult.textBlocks[0].boxPoint[2].y else -1 // 左上角(0, 0)
         var needReline = false
         // 英文和数字进行分词, 其他进行分字操作
         ocrResult.textBlocks.forEachIndexed { allResultIndex, tb ->

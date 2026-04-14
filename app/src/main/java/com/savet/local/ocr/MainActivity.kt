@@ -2,8 +2,6 @@ package com.savet.local.ocr
 
 import android.os.Bundle
 import android.view.Menu
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -15,7 +13,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.savet.local.ocr.base.BaseActivity
 import com.savet.local.ocr.databinding.ActivityMainBinding
-import com.savet.local.ocr.databinding.ActivityReadyBinding
 
 class MainActivity : BaseActivity() {
 

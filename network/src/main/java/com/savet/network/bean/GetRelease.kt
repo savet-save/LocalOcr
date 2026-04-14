@@ -1,50 +1,87 @@
 package com.savet.network.bean
 
+import com.google.gson.annotations.SerializedName
 import com.savet.network.BaseResponse
 
 /**
  * 获得Release的回应头
  */
 data class GetReleaseResponse (
+    @SerializedName("assets")
     val assets: List<Asset>,
-    val assets_url: String,
+
+    @SerializedName("assets_url")
+    val assetsUrl: String,
+
+    @SerializedName("author")
     val author: Author,
+
     /**
      * TAG的描述内容
      */
+    @SerializedName("body")
     val body: String,
+
     /**
      * Release创建时间, 格式如'2024-03-09T09:10:39Z'
      */
-    val created_at: String,
+    @SerializedName("created_at")
+    val createdAt: String,
+
+    @SerializedName("draft")
     val draft: Boolean,
+
     /**
      * 网页浏览地址
      */
-    val html_url: String,
+    @SerializedName("html_url")
+    val htmlUrl: String,
+
+    @SerializedName("id")
     val id: Int,
     /**
      * 大部分时都是TAG名字
      */
+    @SerializedName("name")
     val name: String,
-    val node_id: String,
+
+    @SerializedName("node_id")
+    val nodeId: String,
+
+    @SerializedName("prerelease")
     val prerelease: Boolean,
+
     /**
      * Release发布时间, 格式如'2024-03-09T09:26:03Z'
      */
-    val published_at: String,
+    @SerializedName("published_at")
+    val publishedAt: String,
     /**
      * TAG名字
      */
-    val tag_name: String,
-    val tarball_url: String,
+    @SerializedName("tag_name")
+    val tagName: String,
+
+    @SerializedName("tarball_url")
+    val tarballUrl: String,
+
     /**
      * 仓库默认分支
      */
-    val target_commitish: String,
-    val upload_url: String,
+    @SerializedName("target_commitish")
+    val targetCommitish: String,
+
+    @SerializedName("upload_url")
+    val uploadUrl: String,
+
+    @SerializedName("url")
     val url: String,
-    val zipball_url: String
+
+    /**
+     * 压缩包地址
+     */
+    @SerializedName("zipball_url")
+    val zipballUrl: String
 ) : BaseResponse()
 
 /**

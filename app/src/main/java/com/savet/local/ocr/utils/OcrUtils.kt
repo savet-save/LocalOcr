@@ -6,9 +6,13 @@ import com.benjaminwan.ocrlibrary.OcrEngine
 import com.benjaminwan.ocrlibrary.OcrResult
 import com.savet.local.baselibrary.utils.LogUtils
 import com.savet.local.baselibrary.utils.PreferencesUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import com.savet.local.ocr.utils.OcrUtils.setBoxScoreThresh
+import com.savet.local.ocr.utils.OcrUtils.setBoxThresh
+import com.savet.local.ocr.utils.OcrUtils.setDoAngle
+import com.savet.local.ocr.utils.OcrUtils.setMaxSideLenRatio
+import com.savet.local.ocr.utils.OcrUtils.setMostAngle
+import com.savet.local.ocr.utils.OcrUtils.setPadding
+import com.savet.local.ocr.utils.OcrUtils.setUnClipRatio
 import kotlin.math.max
 
 object OcrUtils {

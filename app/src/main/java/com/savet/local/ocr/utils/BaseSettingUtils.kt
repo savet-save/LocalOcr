@@ -1,6 +1,9 @@
 package com.savet.local.ocr.utils
 
 import com.savet.local.baselibrary.utils.PreferencesUtils
+import com.savet.local.ocr.utils.BaseSettingUtils.setAutoLoadImage
+import com.savet.local.ocr.utils.BaseSettingUtils.setFastDetect
+import com.savet.local.ocr.utils.BaseSettingUtils.setOpenAdvancedSetting
 
 object BaseSettingUtils {
     enum class Item(val defValue: Any) {

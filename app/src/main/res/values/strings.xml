@@ -42,5 +42,10 @@
     <string name="email" translatable="false">savet_save@163.com</string>
     <string name="project_github">Github</string>
     <string name="project_github_addr" translatable="false">https://github.com/savet-save/LocalOcr</string>
+    <string name="new_version_available">new version available!</string>
+    <string name="find_new_version">Discover new releases: %s\n\nUpdates:\n%s</string>
+    <string name="update_now">Update now</string>
+    <string name="cancel">Cancel</string>
+    <string name="update_fail">Update fail!</string>
 
 </resources>

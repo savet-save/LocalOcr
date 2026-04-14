@@ -26,9 +26,18 @@ import com.savet.local.ocr.type.ImageData
 import com.savet.local.ocr.type.TakePhotoContract
 import com.savet.local.ocr.ui.adapter.DetectResultAdapter
 import com.savet.local.ocr.ui.manager.ControlScrollFlowLayoutManager
-import com.savet.local.ocr.utils.*
+import com.savet.local.ocr.utils.BaseSettingUtils
+import com.savet.local.ocr.utils.OcrUtils
+import com.savet.local.ocr.utils.copyToClipboard
+import com.savet.local.ocr.utils.getLatestImageUri
+import com.savet.local.ocr.utils.isAllGranted
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 
 
 class GalleryFragment : BaseFragment() {

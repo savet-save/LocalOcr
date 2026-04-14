@@ -9,7 +9,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.core.content.ContextCompat
-import com.savet.local.ocr.R
+import androidx.core.net.toUri
 
 /**
  * 检查指定的权限是否获取
@@ -66,7 +66,7 @@ fun Context.getLatestImageUri(): Uri? {
 fun Context.sendEMail(mail: String) {
     try {
         val intent = Intent(Intent.ACTION_SENDTO)
-        intent.data = Uri.parse("mailto:$mail")
+        intent.data = "mailto:$mail".toUri()
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     } catch (e: Exception) {
